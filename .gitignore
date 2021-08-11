@@ -112,3 +112,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#Django gitignore
+*/__pycache__/
+mainapp/templatetags/__pycache__/
+*/migrations/*
+media/*
