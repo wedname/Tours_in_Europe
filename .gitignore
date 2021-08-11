@@ -117,4 +117,4 @@ dmypy.json
 */__pycache__/
 mainapp/templatetags/__pycache__/
 */migrations/*
-media/*
+media/
