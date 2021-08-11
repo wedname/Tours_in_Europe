@@ -1,0 +1,25 @@
+{% extends 'tours/base.html' %}
+{% block title %}
+    <title>Контакты</title>
+{% endblock title %}
+
+{% block categories %}
+{% endblock categories %}
+
+{% block content %}
+    <nav aria-label="breadcrumb" class="mt-5">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'base' %}">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Контакты</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-12">
+            <p>Разработчик: Выгоняйло Виталий Владимирович</p>
+            <p>Ссылка на репозиторий: <a href="https://github.com/wedname?tab=repositories">GitHub wedname</a></p>
+            <p>Академия "ШАГ"</p>
+        </div>
+
+    </div>
+{% endblock content %}

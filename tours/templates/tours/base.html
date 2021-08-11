@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+    <title>Туры в Европу</title>
+    {% endblock title %}
+
+     <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<style>
+    body {
+        padding-top: 56px;
+    }
+    footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 70px;
+    }
+</style>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'base' %}">Туры в Европу</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contacts' %}">Контакты</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <div class="row">
+
+            {% block categories %}
+            <div class="col-lg-3 mt-5">
+                <div class="list-group">
+                    <p class="list-group-item">Типы туров:</p>
+                    {% for category_tours in categories %}
+                        <a href="{{ category_tours.get_absolute_url }}" class="list-group-item">{{ category_tours.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endblock categories %}
+            <!-- /.col-lg-3 -->
+
+            <!-- Page Content -->
+            <div class="col-lg-9">
+                {% block content %}
+                <div class="row mt-5">
+                    {% for tour in tours %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100">
+                            <a href="{{ tour.get_absolute_url }}"><img class="card-img-top" src="{{ tour.image.url }}" alt=""></a>
+                                <div class="card-body">
+                                    <h4 class="card-title">
+                                      <a href="{{ tour.get_absolute_url }}">{{ tour.name }}</a>
+                                    </h4>
+                                    <h5>{{ tour.type }}</h5>
+                                    <h5>{{ tour.price }} грн</h5>
+                                </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- /.row -->
+                {% endblock content %}
+            </div>
+              <!-- /.col-lg-9 -->
+
+        </div>
+        <!-- /.row -->
+    </div>
+  <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; wedname</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
