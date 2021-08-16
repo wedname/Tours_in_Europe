@@ -1,0 +1,32 @@
+{% extends 'tours/base.html' %}
+{% block title %}
+    <title>F.A.Q.</title>
+{% endblock title %}
+
+{% block categories %}
+{% endblock categories %}
+
+{% block content %}
+    <div class="col-lg-12">
+
+
+        <nav aria-label="breadcrumb" class="mt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'base' %}">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">F.A.Q.</li>
+            </ol>
+        </nav>
+
+
+
+        <div class="question">
+            <p>Вопрос:</p>
+            <p>Какой тур самый популярный в 2021 году?</p>
+        </div>
+        <div class="answer">
+            <p>Ответ:</p>
+            <p>Самый популярный тур в 2021 - "Туры в Замок Нойшванштайн"</p>
+        </div>
+    </div>
+
+{% endblock content %}

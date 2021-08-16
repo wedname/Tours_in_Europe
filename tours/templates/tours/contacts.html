@@ -7,16 +7,18 @@
 {% endblock categories %}
 
 {% block content %}
-    <nav aria-label="breadcrumb" class="mt-5">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'base' %}">Главная</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Контакты</li>
-        </ol>
-    </nav>
+    <div class="col-lg-12">
+        <nav aria-label="breadcrumb" class="mt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'base' %}">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Контакты</li>
+            </ol>
+        </nav>
 
-    <div class="row">
-        <div class="col-md-12">
+        <div>
             <p>Разработчик: Выгоняйло Виталий Владимирович</p>
+            <p>Телефон: <a href="tel:+74951234567" class="dot">+7 (495) 123-45-67</a></p>
+            <p>Email: <a href="mailto:ask@htmlbook.ru?subject=Вопрос по HTML" class="dot">ask@htmlbook.ru</a></p>
             <p>Ссылка на репозиторий: <a href="https://github.com/wedname?tab=repositories">GitHub wedname</a></p>
             <p>Академия "ШАГ"</p>
         </div>

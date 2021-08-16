@@ -16,28 +16,31 @@
 {% endblock categories %}
 
 {% block content %}
-    <nav aria-label="breadcrumb" class="mt-5">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'base' %}">Главная</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
-        </ol>
-    </nav>
+    <div class="col-lg-9">
+        <nav aria-label="breadcrumb" class="mt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'base' %}">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
+            </ol>
+        </nav>
 
-    <div class="row mt-5">
-        {% for tour in tours %}
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-                <a href="{{ tour.get_absolute_url }}"><img class="card-img-top" src="{{ tour.image.url }}" alt=""></a>
-                    <div class="card-body">
-                        <h4 class="card-title">
-                          <a href="{{ tour.get_absolute_url }}">{{ tour.name }}</a>
-                        </h4>
-                        <h5>{{ tour.type }}</h5>
-                        <h5>{{ tour.price }} грн</h5>
-                    </div>
+        <div class="row mt-5">
+            {% for tour in tours %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <a href="{{ tour.get_absolute_url }}"><img class="card-img-top" src="{{ tour.image.url }}" alt=""></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                              <a href="{{ tour.get_absolute_url }}">{{ tour.name }}</a>
+                            </h4>
+                            <h5>{{ tour.type }}</h5>
+                            <h5>{{ tour.price }} грн</h5>
+                        </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
+
 
 {% endblock content %}

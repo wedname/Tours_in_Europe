@@ -1,27 +1,19 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% block title %}
-    <title>Туры в Европу</title>
-    {% endblock title %}
 
      <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href='{% static "tours/style.css" %}'>
 
+    {% block title %}
+    <title>Туры в Европу</title>
+    {% endblock title %}
 </head>
-<style>
-    body {
-        padding-top: 56px;
-    }
-    footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 70px;
-    }
-</style>
+
 <body>
 
     <!-- Navigation -->
@@ -35,6 +27,9 @@
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'faq' %}">F.A.Q.</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'contacts' %}">Контакты</a>
                     </li>
                 </ul>
@@ -43,50 +38,53 @@
         </div>
     </nav>
 
+    <section>
+        <div class="container">
+            <div class="row">
 
-    <div class="container">
-        <div class="row">
-
-            {% block categories %}
-            <div class="col-lg-3 mt-5">
-                <div class="list-group">
-                    <p class="list-group-item">Типы туров:</p>
-                    {% for category_tours in categories %}
-                        <a href="{{ category_tours.get_absolute_url }}" class="list-group-item">{{ category_tours.name }}</a>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endblock categories %}
-            <!-- /.col-lg-3 -->
-
-            <!-- Page Content -->
-            <div class="col-lg-9">
-                {% block content %}
-                <div class="row mt-5">
-                    {% for tour in tours %}
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card h-100">
-                            <a href="{{ tour.get_absolute_url }}"><img class="card-img-top" src="{{ tour.image.url }}" alt=""></a>
-                                <div class="card-body">
-                                    <h4 class="card-title">
-                                      <a href="{{ tour.get_absolute_url }}">{{ tour.name }}</a>
-                                    </h4>
-                                    <h5>{{ tour.type }}</h5>
-                                    <h5>{{ tour.price }} грн</h5>
-                                </div>
-                        </div>
+                {% block categories %}
+                <div class="col-lg-3 mt-5">
+                    <div class="list-group">
+                        <p class="list-group-item">Типы туров:</p>
+                        {% for category_tours in categories %}
+                            <a href="{{ category_tours.get_absolute_url }}" class="list-group-item">{{ category_tours.name }}</a>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
-                <!-- /.row -->
-                {% endblock content %}
-            </div>
-              <!-- /.col-lg-9 -->
+                {% endblock categories %}
+                <!-- /.col-lg-3 -->
 
+                <!-- Page Content -->
+
+                {% block content %}
+                <div class="col-lg-9">
+                    <div class="row mt-5">
+                        {% for tour in tours %}
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100">
+                                <a href="{{ tour.get_absolute_url }}"><img class="card-img-top" src="{{ tour.image.url }}" alt=""></a>
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                          <a href="{{ tour.get_absolute_url }}">{{ tour.name }}</a>
+                                        </h4>
+                                        <h5>{{ tour.type }}</h5>
+                                        <h5>{{ tour.price }} грн</h5>
+                                    </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- /.row -->
+                    {% endblock content %}
+                </div>
+                  <!-- /.col-lg-9 -->
+
+            </div>
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-    </div>
-  <!-- /.container -->
+      <!-- /.container -->
+    </section>
+
 
     <!-- Footer -->
     <footer class="py-4 bg-dark">

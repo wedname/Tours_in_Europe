@@ -16,27 +16,30 @@
 {% endblock categories %}
 
 {% block content %}
-    <nav aria-label="breadcrumb" class="mt-5">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'base' %}">Главная</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ tour.name }}</li>
-        </ol>
-    </nav>
-<div class="row">
-    <div class="col-md-4">
-        <img src="{{ tour.image.url }}" class="img-fluid">
-    </div>
-    <div class="col-md-8">
-        <h3>{{ tour.name }}</h3>
-        <p>Тип: <a href="{{ tour.type.get_absolute_url }}">{{ tour.type }}</a></p>
-        <p>Цена: {{ tour.price }} грн</p>
+    <div class="col-lg-9">
+        <nav aria-label="breadcrumb" class="mt-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'base' %}">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ tour.name }}</li>
+            </ol>
+        </nav>
 
-    </div>
+        <div class="row">
 
-    <div class="col-md-12">
-        <hr>
-        <p>{{ tour.description }}</p>
-    </div>
+            <div class="col-md-4">
+                <img src="{{ tour.image.url }}" class="img-fluid">
+            </div>
+            <div class="col-md-8">
+                <h3>{{ tour.name }}</h3>
+                <p>Тип: <a href="{{ tour.type.get_absolute_url }}">{{ tour.type }}</a></p>
+                <p>Цена: {{ tour.price }} грн</p>
 
-</div>
+            </div>
+
+            <div class="col-md-12">
+                <hr>
+                <p>{{ tour.description }}</p>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

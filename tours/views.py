@@ -59,3 +59,10 @@ class ContactsView(View):
     @staticmethod
     def get(request, *args, **kwargs):
         return render(request, 'tours/contacts.html')
+
+
+class FaqView(View):
+
+    @staticmethod
+    def get(request, *args, **kwargs):
+        return render(request, 'tours/faq.html')
