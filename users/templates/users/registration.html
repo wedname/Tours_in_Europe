@@ -1,0 +1,20 @@
+{% extends 'tours/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block categories %}
+{% endblock categories %}
+
+{% block content %}
+    <div class="col-lg-12">
+        <div style="margin-top: 20px" class="col-md-6 offset-md-3">
+            <h3 class="text-center">Регистрация нового пользователя</h3>
+            <hr>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input style="margin-bottom: 50px; margin-top: 50px" type="submit" class="btn btn-success btn-block" value="Зарегистрироваться">
+            </form>
+        </div>
+    </div>
+{% endblock %}

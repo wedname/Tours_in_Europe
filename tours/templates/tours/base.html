@@ -24,6 +24,20 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    {% if not request.user.is_authenticated %}
+                    <li>
+                        <a class="nav-link text-white" href="{% url 'login' %}">Авторизация</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-white" href="{% url 'registration' %}">Регистрация</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <span class="navbar-text text-light">Здравствуйте, {% if request.user.is_authenticated %}<span class="badge badge-danger"><a href="#" style="text-decoration: none; font-size: 14px;">{{ request.user.username }}</a></span>{% else %} гоcть!{% endif %}<a href="{% url 'logout' %}">| Выйти</a></span>
+                    </li>
+                    {% endif %}
+                </ul>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
