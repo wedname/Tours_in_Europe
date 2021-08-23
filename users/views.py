@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth import login, authenticate
-from django.views.generic import View
+from django.views.generic import View, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, UserUpdateForm, ProfileUpdateForm
 from .models import Customer
 
 
@@ -71,3 +73,43 @@ class RegistrationView(View):
             'form': form,
         }
         return render(request, 'users/registration.html', context)
+
+
+class UserProfileView(LoginRequiredMixin, ListView):
+    model = Customer
+    queryset = Customer.objects.all()
+    template_name = 'users/profile.html'
+    context_object_name = 'user'
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user).first()
+
+
+class UserUpdateView(UserPassesTestMixin, LoginRequiredMixin, View):
+
+    @staticmethod
+    def get(request, *args, **kwargs):
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.customer)
+
+        context = {
+            "u_form": u_form,
+            "p_form": p_form
+        }
+        return render(request, "users/profile_update.html", context)
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.customer)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, "Ваш аккаунт успешно обновлен!")
+            return redirect("profile")
+
+    def test_func(self):
+        user = Customer.objects.filter(user=self.request.user).first()
+        return self.request.user == user.user

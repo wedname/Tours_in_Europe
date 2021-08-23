@@ -13,6 +13,9 @@ footer {
         height: 70px;
 }
 
+div.controls input{
+    width:100%;
+}
 
 /* faq.html */
 .question{

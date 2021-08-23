@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
+from users.models import Customer
+
 User = get_user_model()
 
 
@@ -63,3 +65,21 @@ class RegistrationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'password', 'confirm_password', 'first_name', 'last_name', 'address', 'phone', 'email']
+
+
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ["username", "email", 'first_name', 'last_name']
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    image = forms.ImageField(required=False)
+    phone = forms.CharField(required=False)
+    address = forms.CharField(required=False)
+
+    class Meta:
+        model = Customer
+        fields = ["image", 'phone', 'address']

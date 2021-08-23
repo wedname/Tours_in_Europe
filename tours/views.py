@@ -1,24 +1,21 @@
 from django.shortcuts import render
-from django.views.generic import DetailView, View
+from django.views.generic import DetailView, View, ListView
 
 from .models import ToursInEurope, TourCategories
 
 
-# Create your views here.
-class BaseView(View):
+class BaseView(ListView):
+    model = ToursInEurope
+    context_object_name = 'tours'
+    template_name = 'tours/base.html'
 
-    @staticmethod
-    def get(request, *args, **kwargs):
-        tours = ToursInEurope.objects.all()
-        categories = TourCategories.objects.raw("""select tours_tourcategories.id 
-        from tours_toursineurope, tours_tourcategories
-        where tours_tourcategories.id = tours_toursineurope.type_id
-        group by tours_tourcategories.name""")
-        context = {
-            'categories': categories,
-            'tours': tours,
-        }
-        return render(request, 'tours/base.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = TourCategories.objects.raw("""select tours_tourcategories.id 
+                from tours_toursineurope, tours_tourcategories
+                where tours_tourcategories.id = tours_toursineurope.type_id
+                group by tours_tourcategories.name""")
+        return context
 
 
 class ToursDetailView(DetailView):
