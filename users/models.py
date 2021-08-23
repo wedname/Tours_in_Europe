@@ -16,7 +16,8 @@ class Customer(models.Model):
                               blank=True,
                               upload_to='profile_img',
                               verbose_name='Изображение')
-    tours_registration = models.ManyToManyField('tours.ToursInEurope', verbose_name='Записи на туры', related_name='related_order')
+    ability_to_create_tours = models.BooleanField(default=False, verbose_name='Возможность создавать туры')
+    tours_registration = models.ManyToManyField('tours.ToursInEurope', null=True, blank=True, verbose_name='Записи на туры', related_name='related_order')
 
     def __str__(self):
         return f"Покупатель: {self.user.first_name} {self.user.last_name}"

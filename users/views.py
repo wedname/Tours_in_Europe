@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .forms import RegistrationForm, LoginForm, UserUpdateForm, ProfileUpdateForm
 from .models import Customer
+from tours.models import ToursInEurope
 
 
 class LoginView(View):
@@ -83,6 +84,11 @@ class UserProfileView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user).first()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tours'] = ToursInEurope.objects.filter(author=self.request.user)
+        return context
 
 
 class UserUpdateView(UserPassesTestMixin, LoginRequiredMixin, View):
