@@ -8,7 +8,9 @@ from .views import (
     FaqView,
     TourCreateView,
     TourUpdateView,
-    TourDeleteView
+    TourDeleteView,
+    AddTourView,
+    DeleteTourView
 )
 
 urlpatterns = [
@@ -20,4 +22,6 @@ urlpatterns = [
     path('tour/new/', TourCreateView.as_view(), name="tour_create"),
     path('tour/<str:slug>/update/', TourUpdateView.as_view(), name="tour-update"),
     path('tour/<str:slug>/delete/', TourDeleteView.as_view(), name="tour-delete"),
+    path('add-tour/<str:slug>/', AddTourView.as_view(), name='add_tour'),
+    path('delete-tour/<str:slug>/', DeleteTourView.as_view(), name='delete_tour'),
 ]

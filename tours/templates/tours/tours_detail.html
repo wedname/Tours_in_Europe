@@ -33,6 +33,11 @@
                 <h3>{{ tour.name }}</h3>
                 <p>Тип: <a href="{{ tour.type.get_absolute_url }}">{{ tour.type }}</a></p>
                 <p>Цена: {{ tour.price }} грн</p>
+                    {% if is_followed_tour %}
+                        <a href="{% url 'delete_tour' tour.slug %}" style="margin-top: 20px" class="btn btn-danger btn-block">Отписаться</a>
+                    {% else %}
+                        <a href="{% url 'add_tour' tour.slug %}" style="margin-top: 20px" class="btn btn-danger btn-block">Подписаться на тур</a>
+                    {% endif %}
 
             </div>
 

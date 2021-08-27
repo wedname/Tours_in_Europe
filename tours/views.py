@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import DetailView, View, ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import AnonymousUser
+from django.http import HttpResponseRedirect
 
 from .models import ToursInEurope, TourCategories
 from users.models import Customer
@@ -33,6 +35,8 @@ class ToursDetailView(DetailView):
         from tours_toursineurope, tours_tourcategories
         where tours_tourcategories.id = tours_toursineurope.type_id
         group by tours_tourcategories.name""")
+        context['user'] = Customer.objects.filter(user=self.request.user)
+        context['is_followed_tour'] = Customer.objects.filter(user=self.request.user, tours_registration__slug=self.kwargs['slug']).first()
         return context
 
 
@@ -128,8 +132,33 @@ class AddTourView(UserPassesTestMixin, LoginRequiredMixin, View):
 
     @staticmethod
     def get(request, *args, **kwargs):
-        pass
+        tour_slug = kwargs.get('slug')
+        tour = ToursInEurope.objects.get(slug=tour_slug)
+        customer = Customer.objects.get(user=request.user)
+        customer.tours_registration.add(tour)
+        customer.save()
+        return HttpResponseRedirect('/')
 
     def test_func(self):
+        if self.request.user.is_anonymous:
+            return HttpResponseRedirect('/login/')
+        user = Customer.objects.filter(user=self.request.user).first()
+        return self.request.user == user.user
+
+
+class DeleteTourView(UserPassesTestMixin, LoginRequiredMixin, View):
+
+    @staticmethod
+    def get(request, *args, **kwargs):
+        tour_slug = kwargs.get('slug')
+        tour = ToursInEurope.objects.get(slug=tour_slug)
+        customer = Customer.objects.get(user=request.user)
+        customer.tours_registration.remove(tour)
+        customer.save()
+        return HttpResponseRedirect('/')
+
+    def test_func(self):
+        if self.request.user.is_anonymous:
+            return HttpResponseRedirect('/login/')
         user = Customer.objects.filter(user=self.request.user).first()
         return self.request.user == user.user

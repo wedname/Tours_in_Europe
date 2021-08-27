@@ -62,5 +62,27 @@
             </div>
         {% endif %}
 
+        <hr>
+        <div class="col-lg-12">
+            <h3 class="text-center">Подписки на туры</h3>
+            <div class="row mt-5">
+                {% for tour in user.tours_registration.all %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100">
+                            <a href="{{ tour.get_absolute_url }}"><img class="card-img-top" src="{{ tour.image.url }}" alt=""></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="{{ tour.get_absolute_url }}">{{ tour.name }}</a>
+                                </h4>
+                                <h5>{{ tour.type }}</h5>
+                                <h5>{{ tour.price }} грн</h5>
+                                <a href="{% url 'delete_tour' tour.slug %}" style="margin-top: 20px" class="btn btn-danger btn-block">Отписаться</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
     </div>
 {% endblock content %}
