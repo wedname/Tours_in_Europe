@@ -1,0 +1,79 @@
+{% extends 'tours/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>{{ title }}</title>
+{% endblock title %}
+
+{% block categories %}
+    <div class="col-lg-3 mt-5">
+        <div class="list-group">
+            <p class="list-group-item">Типы туров:</p>
+            {% for category_tours in categories %}
+                <a href="{{ category_tours.get_absolute_url }}" class="list-group-item">{{ category_tours.name }}</a>
+            {% endfor %}
+        </div>
+
+        <form method="GET">
+            {% csrf_token %}
+            {{ filter.form|crispy}}
+            <button type="submit" class="btn btn-primary">Поиск</button>
+        </form>
+
+        {% if is_paginated %}
+        <nav style="margin-top: 30px" aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"2" %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+
+
+
+{% endblock categories %}
+
+{% block content %}
+    <div class="col-lg-9">
+        <div class="row mt-5">
+            {% for tour in tours %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <a href="{{ tour.get_absolute_url }}"><img class="card-img-top" src="{{ tour.image.url }}" alt=""></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                              <a href="{{ tour.get_absolute_url }}">{{ tour.name }}</a>
+                            </h4>
+                            <h5>{{ tour.type }}</h5>
+                            <h5>{{ tour.price }} грн</h5>
+                        </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock content %}

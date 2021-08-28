@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k)*xr61nbf2h08z%kfqf2@^!_o3yq23wp^qv1)e5e5zi7b8w)4'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'tours',
     'users',
     'crispy_forms',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -80,11 +81,11 @@ WSGI_APPLICATION = 'Tours_in_Europe.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_tours',
-        'USER': 'root',
-        'PASSWORD': '1111',
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
+        'NAME': os.environ.get("DATABASES_NAME"),
+        'USER': os.environ.get("DATABASES_USER"),
+        'PASSWORD': os.environ.get("DATABASES_PASSWORD"),
+        'HOST': os.environ.get("DATABASES_HOST"),
+        'PORT': os.environ.get("DATABASES_PORT"),
     }
 }
 

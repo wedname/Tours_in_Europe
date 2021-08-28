@@ -5,19 +5,35 @@ from django.http import HttpResponseRedirect
 
 from .models import ToursInEurope, TourCategories
 from users.models import Customer
+from .filters import ToursFilter
 
 
-class BaseView(ListView):
-    model = ToursInEurope
-    context_object_name = 'tours'
-    template_name = 'tours/base.html'
+class FilterToursListView(ListView):
+
+    filter_class = None
+
+    def get_queryset(self, **kwargs):
+        qs = super().get_queryset()
+        req = self.request.GET
+        self.filtered = self.filter_class(req, qs)
+        return self.filtered.qs.distinct()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = TourCategories.objects.raw("""select tours_tourcategories.id 
-                from tours_toursineurope, tours_tourcategories
-                where tours_tourcategories.id = tours_toursineurope.type_id
-                group by tours_tourcategories.name""")
+        context['filter'] = self.filtered
+        return context
+
+
+class BaseView(FilterToursListView):
+    model = ToursInEurope
+    filter_class = ToursFilter
+    context_object_name = 'tours'
+    template_name = 'tours/index.html'
+    paginate_by = 6
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = TourCategories.objects.filter(toursineurope__type__name__isnull=False).distinct()
         return context
 
 
@@ -30,12 +46,11 @@ class ToursDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = context['tour'].name
-        context['categories'] = self.get_object().type.__class__.objects.raw("""select tours_tourcategories.id 
-        from tours_toursineurope, tours_tourcategories
-        where tours_tourcategories.id = tours_toursineurope.type_id
-        group by tours_tourcategories.name""")
+        context['categories'] = self.get_object().type.__class__.objects.filter(
+            toursineurope__type__name__isnull=False).distinct()
         context['user'] = Customer.objects.filter(user=self.request.user)
-        context['is_followed_tour'] = Customer.objects.filter(user=self.request.user, tours_registration__slug=self.kwargs['slug']).first()
+        context['is_followed_tour'] = Customer.objects.filter(
+            user=self.request.user, tours_registration__slug=self.kwargs['slug']).first()
         return context
 
 
@@ -48,10 +63,7 @@ class CategoryDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Тип - ' + str(context['category'].name)
-        context['categories'] = TourCategories.objects.raw("""select tours_tourcategories.id
-            from tours_toursineurope, tours_tourcategories
-            where tours_tourcategories.id = tours_toursineurope.type_id
-            group by tours_tourcategories.name""")
+        context['categories'] = TourCategories.objects.filter(toursineurope__type__name__isnull=False).distinct()
         context['tours'] = ToursInEurope.objects.filter(type__name=context['category'].name)
         return context
 
@@ -77,6 +89,7 @@ class TourCreateView(LoginRequiredMixin, CreateView):
         'image',
         'name',
         'type',
+        'country',
         'description',
         'price'
     ]
@@ -99,6 +112,7 @@ class TourUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
         'image',
         'name',
         'type',
+        'country',
         'description',
         'price'
     ]
