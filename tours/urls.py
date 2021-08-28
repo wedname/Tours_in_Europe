@@ -10,7 +10,7 @@ from .views import (
     TourUpdateView,
     TourDeleteView,
     AddTourView,
-    DeleteTourView
+    DeleteTourView,
 )
 
 urlpatterns = [
@@ -25,3 +25,5 @@ urlpatterns = [
     path('add-tour/<str:slug>/', AddTourView.as_view(), name='add_tour'),
     path('delete-tour/<str:slug>/', DeleteTourView.as_view(), name='delete_tour'),
 ]
+
+

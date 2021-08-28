@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import DetailView, View, ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponseRedirect
 
 from .models import ToursInEurope, TourCategories
@@ -162,3 +161,21 @@ class DeleteTourView(UserPassesTestMixin, LoginRequiredMixin, View):
             return HttpResponseRedirect('/login/')
         user = Customer.objects.filter(user=self.request.user).first()
         return self.request.user == user.user
+
+
+def error404(request, exception):
+    if "tried" in str(exception):
+        context = {"exception": "page not found"}
+    else:
+        context = {"exception": exception}
+    return render(request, "tours/404.html", context)
+
+
+def error403(request, exception):
+    context = {"exception": exception}
+    return render(request, "tours/404.html", context)
+
+
+def error500(request,):
+    context = {"exception": 'Сервер не отвечает'}
+    return render(request, "tours/404.html", context)

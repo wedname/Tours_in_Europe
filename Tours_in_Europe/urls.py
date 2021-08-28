@@ -18,12 +18,15 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('tours.urls')),
     path('', include('users.urls')),
 ]
+
+handler404 = 'tours.views.error404'
+handler403 = 'tours.views.error403'
+handler500 = 'tours.views.error500'
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
