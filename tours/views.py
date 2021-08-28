@@ -48,9 +48,10 @@ class ToursDetailView(DetailView):
         context['title'] = context['tour'].name
         context['categories'] = self.get_object().type.__class__.objects.filter(
             toursineurope__type__name__isnull=False).distinct()
-        context['user'] = Customer.objects.filter(user=self.request.user)
-        context['is_followed_tour'] = Customer.objects.filter(
-            user=self.request.user, tours_registration__slug=self.kwargs['slug']).first()
+        if self.request.user.is_authenticated:
+            context['user'] = Customer.objects.filter(user=self.request.user)
+            context['is_followed_tour'] = Customer.objects.filter(
+                user=self.request.user, tours_registration__slug=self.kwargs['slug']).first()
         return context
 
 
